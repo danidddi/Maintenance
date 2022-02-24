@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ServiceDB" Class="ServiceDBDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=|DataDirectory|\App_Data\ServiceDB.mdf;Integrated Security=True" SettingsObjectName="Maintenance.Properties.Settings" SettingsPropertyName="ServiceDBConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Cars" Member="Cars">
+    <Type Name="Cars">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Brand" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Model" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="idColor" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ReleaseYear" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Plate" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="Defect" Type="System.String" DbType="NVarChar(1024) NOT NULL" CanBeNull="false" />
+      <Column Name="idOwner" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Cars_Clients" Member="Clients" ThisKey="Id" OtherKey="idAuto" Type="Clients" />
+      <Association Name="Colors_Cars" Member="Colors" ThisKey="idColor" OtherKey="Id" Type="Colors" IsForeignKey="true" />
+      <Association Name="Owners_Cars" Member="Owners" ThisKey="idOwner" OtherKey="Id" Type="Owners" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Clients" Member="Clients">
+    <Type Name="Clients">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idPerson" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BornDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Registration" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(13) NOT NULL" CanBeNull="false" />
+      <Column Name="idAuto" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Clients_Services" Member="Services" ThisKey="Id" OtherKey="idClient" Type="Services" />
+      <Association Name="Cars_Clients" Member="Cars" ThisKey="idAuto" OtherKey="Id" Type="Cars" IsForeignKey="true" />
+      <Association Name="Persons_Clients" Member="Persons" ThisKey="idPerson" OtherKey="Id" Type="Persons" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Colors" Member="Colors">
+    <Type Name="Colors">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Color" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Colors_Cars" Member="Cars" ThisKey="Id" OtherKey="idColor" Type="Cars" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Owners" Member="Owners">
+    <Type Name="Owners">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idPerson" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BornDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(13) NOT NULL" CanBeNull="false" />
+      <Column Name="Registration" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Owners_Cars" Member="Cars" ThisKey="Id" OtherKey="idOwner" Type="Cars" />
+      <Association Name="Persons_Owners" Member="Persons" ThisKey="idPerson" OtherKey="Id" Type="Persons" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Persons" Member="Persons">
+    <Type Name="Persons">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Surname" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Patronymic" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Persons_Clients" Member="Clients" ThisKey="Id" OtherKey="idPerson" Type="Clients" />
+      <Association Name="Persons_Owners" Member="Owners" ThisKey="Id" OtherKey="idPerson" Type="Owners" />
+      <Association Name="Persons_Workers" Member="Workers" ThisKey="Id" OtherKey="idPerson" Type="Workers" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Services" Member="Services">
+    <Type Name="Services">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idClient" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="idWorker" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="State" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Purchases" Type="System.String" DbType="NVarChar(1024) NOT NULL" CanBeNull="false" />
+      <Column Name="DateAcceptance" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="DateIssuance" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Outlay" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Pay" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="Clients_Services" Member="Clients" ThisKey="idClient" OtherKey="Id" Type="Clients" IsForeignKey="true" />
+      <Association Name="Workers_Services" Member="Workers" ThisKey="idWorker" OtherKey="Id" Type="Workers" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Specialtys" Member="Specialtys">
+    <Type Name="Specialtys">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Specialty" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Association Name="Specialtys_Workers" Member="Workers" ThisKey="Id" OtherKey="idSpecialty" Type="Workers" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Workers" Member="Workers">
+    <Type Name="Workers">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idPerson" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BornDate" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="PhoneNumber" Type="System.String" DbType="NVarChar(13) NOT NULL" CanBeNull="false" />
+      <Column Name="Registration" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="idSpecialty" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Rank" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Employment" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Association Name="Workers_Services" Member="Services" ThisKey="Id" OtherKey="idWorker" Type="Services" />
+      <Association Name="Persons_Workers" Member="Persons" ThisKey="idPerson" OtherKey="Id" Type="Persons" IsForeignKey="true" />
+      <Association Name="Specialtys_Workers" Member="Specialtys" ThisKey="idSpecialty" OtherKey="Id" Type="Specialtys" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
